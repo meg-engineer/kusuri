@@ -1,46 +1,38 @@
 <template>
   <div id="app" class="profile">
     <div>
-      <span v-if="getStateUser.user.photoURL">
-        <img class="profile-image" v-bind:src="getStateUser.user.photoURL" />
+      <span v-if="$route.params.value.content.data2.user.photoURL">
+        <img
+          class="profile-image"
+          v-bind:src="$route.params.value.content.data2.user.photoURL"
+        />
       </span>
       <span v-else>
         <v-icon class="profile-image" large color="white">🐻</v-icon>
       </span>
-      <span v-if="getStateUser.user.displayName">{{
-        getStateUser.user.displayName
+      <span v-if="$route.params.value.content.data2.user.displayName">{{
+        $route.params.value.content.data2.user.displayName
       }}</span>
       <span v-else>くま</span>
     </div>
     <div>
-      くすり歴：
+      ○くすり歴
       <div
         class="messages-list"
         v-for="(message, index) in messages"
         :key="index"
       >
         <span
-          v-if="message.content.data2.user.email == getStateUser.user.email"
+          v-if="
+            message.content.data2.user.displayName ==
+              $route.params.value.content.data2.user.displayName
+          "
         >
           {{ message.content.data1 }}
-          <v-btn
-            class="delete-btn"
-            small
-            color="warning"
-            @click="deleteMessage(index)"
-            >削除</v-btn
-          >
         </span>
+        <span v-else></span>
       </div>
     </div>
-    <p>
-      <v-btn small color="primary" to="/message">くすりとさせる</v-btn>
-    </p>
-    <p>
-      <v-btn class="delete-btn" small color="error" @click="deleteUser"
-        >アカウント削除</v-btn
-      >
-    </p>
   </div>
 </template>
 
@@ -48,7 +40,7 @@
 import firebase from "firebase";
 
 export default {
-  name: "Profile",
+  name: "User",
   data: function() {
     return {
       user: this.$store.getters.getStateUser,
@@ -105,7 +97,7 @@ export default {
 }
 
 .messages-list {
-  margin: 5px;
+  margin: 7px;
   margin-bottom: 10px;
 }
 </style>

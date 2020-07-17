@@ -20,23 +20,30 @@
     <v-btn color="primary" @click="add" data-cy="addMessageBtn"
       >くすりとさせる</v-btn
     >
-    <p>入力：{{ messege }}</p>
-    <p>stateの値：{{ getStateMessege }}</p>
 
-    <p class="font-weight-bold">くすり一覧</p>
+    <p class="kusuri-index font-weight-bold">くすり一覧</p>
     <li class="messages-list" v-for="(message, index) in messages" :key="index">
-      {{ message.content }} :
-      <span v-if="getStateUser.user.displayName">{{
-        getStateUser.user.displayName
-      }}</span>
-      <span v-else>{{ getStateUser.user.email }}</span>
-      <v-btn
-        class="delete-btn"
-        small
-        color="error"
-        @click="deleteMessage(index)"
-        >削除</v-btn
+      {{ message.content.data1 }} :
+      <router-link :to="{ name: 'User', params: { value: message } }">
+        <span v-if="message.content.data2.user.displayName">
+          {{ message.content.data2.user.displayName }}
+        </span>
+        <span v-else>{{ message.content.data2.user.email }}</span>
+      </router-link>
+      <span v-if="!isAuthenticated">
+        <span></span>
+      </span>
+      <span
+        v-else-if="message.content.data2.user.email == getStateUser.user.email"
       >
+        <v-btn
+          class="delete-btn"
+          small
+          color="warning"
+          @click="deleteMessage(index)"
+          >削除</v-btn
+        >
+      </span>
     </li>
   </div>
 </template>
@@ -50,7 +57,7 @@ export default {
     return {
       messages: [],
       messege: "",
-      user: null
+      user: this.$store.getters.getStateUser
     };
   },
   computed: {
@@ -67,7 +74,11 @@ export default {
   methods: {
     add() {
       if (this.isAuthenticated) {
-        this.$store.dispatch("addMessage", this.messege);
+        this.$store.dispatch("addMessage", {
+          messageData: this.messege,
+          userData: this.user
+        });
+        this.messege = "";
       } else {
         this.$router.push("/sign-in");
       }
@@ -109,5 +120,10 @@ export default {
   background-size: cover;
   width: 100%;
   height: 100%;
+}
+
+.kusuri-index {
+  margin-top: 20px;
+  font-size: 18px;
 }
 </style>

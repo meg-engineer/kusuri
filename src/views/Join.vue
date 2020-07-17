@@ -9,6 +9,14 @@
           <v-card-text>
             <v-form ref="form" v-model="valid" lazy-validation>
               <v-text-field
+                name="username"
+                label="username"
+                type="text"
+                v-model="userName"
+                data-cy="joinUserNameField"
+                required
+              ></v-text-field>
+              <v-text-field
                 name="email"
                 label="Email"
                 type="email"
@@ -50,6 +58,7 @@ export default {
   data() {
     return {
       valid: false,
+      userName: "",
       email: "",
       password: "",
       emailRules: [
@@ -66,6 +75,7 @@ export default {
     submit() {
       if (this.$refs.form.validate()) {
         this.$store.dispatch("userJoin", {
+          userName: this.userName,
           email: this.email,
           password: this.password
         });

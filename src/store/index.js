@@ -11,7 +11,8 @@ export default new Vuex.Store({
     user: null,
     isAuthenticated: false,
     messages: [],
-    messege: ""
+    messege: "",
+    userName: ""
   },
   mutations: {
     setUser(state, payload) {
@@ -22,6 +23,9 @@ export default new Vuex.Store({
     },
     mutateMessege(state, payload) {
       state.messege = payload;
+    },
+    setUserName(state, payload) {
+      state.userName = payload;
     }
   },
 
@@ -33,7 +37,7 @@ export default new Vuex.Store({
         .then(user => {
           commit("setUser", user);
           commit("setIsAuthenticated", true);
-          router.push("/");
+          router.push("/message");
         })
         .catch(() => {
           commit("setUser", null);
@@ -49,7 +53,7 @@ export default new Vuex.Store({
         .then(user => {
           commit("setUser", user);
           commit("setIsAuthenticated", true);
-          router.push("/");
+          router.push("/message");
         })
         .catch(() => {
           commit("setUser", null);
@@ -57,19 +61,30 @@ export default new Vuex.Store({
           router.push("/");
         });
     },
-    userJoin({ commit }, { email, password }) {
+    userJoin({ commit }, { email, password, userName }) {
       firebase
         .auth()
         .createUserWithEmailAndPassword(email, password)
-        .then(user => {
-          commit("setUser", user);
+        .then(result => {
+          result.user.updateProfile({
+            displayName: userName
+          });
+          commit("setUser", result);
           commit("setIsAuthenticated", true);
-          router.push("/");
+          router.push("/message");
         })
         .catch(() => {
           commit("setUser", null);
           commit("setIsAuthenticated", false);
           router.push("/");
+        });
+      firebase
+        .database()
+        .ref("users")
+        .push({
+          displayName: userName,
+          email: email,
+          password: password
         });
     },
     userSignOut({ commit }) {
@@ -102,16 +117,19 @@ export default new Vuex.Store({
           router.push("/");
         });
     },
-    addMessage(store, payload) {
+    addMessage(store, { messageData, userData }) {
+      const data = {
+        data1: messageData,
+        data2: userData
+      };
       firebase
         .database()
         .ref("messages")
         .push({
-          content: payload
+          content: data
         })
-        .then(() => {
-          store.commit("mutateMessege", payload);
-          // router.push("/");
+        .then(data => {
+          store.commit("mutateMessege", data);
         });
     }
   },
@@ -124,6 +142,9 @@ export default new Vuex.Store({
     },
     getStateUser(state) {
       return state.user;
+    },
+    getUserName(state) {
+      return state.userName;
     }
   },
   plugins: [

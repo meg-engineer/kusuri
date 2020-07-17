@@ -37,12 +37,12 @@
               data-cy="signinSubmitBtn"
               >ログイン</v-btn
             >
-            <v-btn style="text-transform: none" @click="submitGoogle"
-              ><font-awesome-icon
+            <v-btn style="text-transform: none" @click="submitGoogle">
+              <font-awesome-icon
                 :icon="{ prefix: 'fab', iconName: 'google' }"
-              ></font-awesome-icon
-              ><span>Googleアカウントでログイン</span></v-btn
-            >
+              ></font-awesome-icon>
+              <span>Googleアカウントでログイン</span>
+            </v-btn>
           </v-card-actions>
         </v-card>
       </v-flex>
