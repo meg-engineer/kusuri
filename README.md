@@ -1,24 +1,17 @@
-# kusuri
+# くすり KUSURI
 
-## Project setup
-```
-npm install
-```
+## くすりって？
 
-### Compiles and hot-reloads for development
-```
-npm run serve
-```
+日々のクスッと笑える出来事をシェアできるチャットアプリです。  
+Let's share your happiness!
 
-### Compiles and minifies for production
-```
-npm run build
-```
+## 実装機能
 
-### Lints and fixes files
-```
-npm run lint
-```
+- フロントエンド
 
-### Customize configuration
-See [Configuration Reference](https://cli.vuejs.org/config/).
+  - Vue.js を用いたシングルページアプリケーション
+  - Vuex による状態管理
+
+- バックエンド
+  - Firebase を用いたユーザー認証機能(新規登録、ログイン、ログアウト、アカウント削除)
+  - Firebase による DB 処理(投稿、ユーザー情報などの追加、保存、取得、削除)
