@@ -12,7 +12,8 @@ export default new Vuex.Store({
     isAuthenticated: false,
     messages: [],
     messege: "",
-    userName: ""
+    userName: "",
+    count: 0
   },
   mutations: {
     setUser(state, payload) {
@@ -23,6 +24,9 @@ export default new Vuex.Store({
     },
     mutateMessege(state, payload) {
       state.messege = payload;
+    },
+    mutateCount(state) {
+      state.count++;
     },
     setUserName(state, payload) {
       state.userName = payload;
@@ -117,10 +121,11 @@ export default new Vuex.Store({
           router.push("/");
         });
     },
-    addMessage(store, { messageData, userData }) {
+    addMessage(store, { messageData, userData, countData }) {
       const data = {
         data1: messageData,
-        data2: userData
+        data2: userData,
+        data3: countData
       };
       firebase
         .database()
@@ -130,6 +135,19 @@ export default new Vuex.Store({
         })
         .then(data => {
           store.commit("mutateMessege", data);
+        });
+    },
+    addCount(store, { index, addCountData }) {
+      firebase
+        .database()
+        .ref("messages")
+        .child(index)
+        .child("content")
+        .update({
+          data3: addCountData
+        })
+        .then(() => {
+          store.commit("mutateCount");
         });
     }
   },
@@ -145,6 +163,9 @@ export default new Vuex.Store({
     },
     getUserName(state) {
       return state.userName;
+    },
+    getCount(state) {
+      return state.count;
     }
   },
   plugins: [

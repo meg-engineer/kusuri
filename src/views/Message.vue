@@ -25,11 +25,19 @@
     <li class="messages-list" v-for="(message, index) in messages" :key="index">
       {{ message.content.data1 }} :
       <router-link :to="{ name: 'User', params: { value: message } }">
-        <span v-if="message.content.data2.user.displayName">
-          {{ message.content.data2.user.displayName }}
-        </span>
+        <span v-if="message.content.data2.user.displayName">{{
+          message.content.data2.user.displayName
+        }}</span>
         <span v-else>{{ message.content.data2.user.email }}</span>
       </router-link>
+      <span v-if="!isAuthenticated">
+        <span class="count">いいね{{ message.content.data3 }}</span>
+      </span>
+      <span v-else>
+        <v-btn class="delete-btn" small color="success" @click="addCount(index)"
+          >いいね{{ message.content.data3 }}</v-btn
+        >
+      </span>
       <span v-if="!isAuthenticated">
         <span></span>
       </span>
@@ -57,7 +65,8 @@ export default {
     return {
       messages: [],
       messege: "",
-      user: this.$store.getters.getStateUser
+      user: this.$store.getters.getStateUser,
+      count: this.$store.getters.getCount
     };
   },
   computed: {
@@ -69,6 +78,9 @@ export default {
     },
     isAuthenticated() {
       return this.$store.getters.isAuthenticated;
+    },
+    getCount() {
+      return this.$store.getters.getCount;
     }
   },
   methods: {
@@ -76,7 +88,8 @@ export default {
       if (this.isAuthenticated) {
         this.$store.dispatch("addMessage", {
           messageData: this.messege,
-          userData: this.user
+          userData: this.user,
+          countData: this.count
         });
         this.messege = "";
       } else {
@@ -89,6 +102,10 @@ export default {
         .ref("messages")
         .child(index)
         .remove();
+    },
+    addCount(index) {
+      const addCountData = this.count++;
+      this.$store.dispatch("addCount", { index, addCountData });
     }
   },
   mounted() {

@@ -7,9 +7,9 @@
       <span v-else>
         <v-icon class="profile-image" large color="white">🐻</v-icon>
       </span>
-      <span v-if="getStateUser.user.displayName">{{
-        getStateUser.user.displayName
-      }}</span>
+      <span v-if="getStateUser.user.displayName">
+        {{ getStateUser.user.displayName }}
+      </span>
       <span v-else>くま</span>
     </div>
     <div>
@@ -23,6 +23,7 @@
           v-if="message.content.data2.user.email == getStateUser.user.email"
         >
           {{ message.content.data1 }}
+          <span class="count">いいね{{ message.content.data3 }}</span>
           <v-btn
             class="delete-btn"
             small

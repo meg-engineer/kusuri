@@ -10,9 +10,9 @@
       <span v-else>
         <v-icon class="profile-image" large color="white">🐻</v-icon>
       </span>
-      <span v-if="$route.params.value.content.data2.user.displayName">{{
-        $route.params.value.content.data2.user.displayName
-      }}</span>
+      <span v-if="$route.params.value.content.data2.user.displayName">
+        {{ $route.params.value.content.data2.user.displayName }}
+      </span>
       <span v-else>くま</span>
     </div>
     <div>
@@ -29,6 +29,7 @@
           "
         >
           {{ message.content.data1 }}
+          <span class="count">いいね{{ message.content.data3 }}</span>
         </span>
         <span v-else></span>
       </div>
