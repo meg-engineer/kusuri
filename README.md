@@ -11,6 +11,7 @@ Let's share your happiness!
 
   - Vue.js を用いたシングルページアプリケーション
   - Vuex による状態管理
+  - Vuetify を用いたデザイン作成
 
 - バックエンド
   - Firebase を用いたユーザー認証機能(新規登録、ログイン、ログアウト、アカウント削除)

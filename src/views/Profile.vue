@@ -1,48 +1,70 @@
 <template>
-  <div id="app" class="profile">
-    <div>
-      <span v-if="getStateUser.user.photoURL">
-        <img class="profile-image" v-bind:src="getStateUser.user.photoURL" />
-      </span>
-      <span v-else>
-        <v-icon class="profile-image" large color="white">🐻</v-icon>
-      </span>
-      <span v-if="getStateUser.user.displayName">
-        {{ getStateUser.user.displayName }}
-      </span>
-      <span v-else>くま</span>
-    </div>
-    <div>
-      くすり歴：
-      <div
-        class="messages-list"
-        v-for="(message, index) in messages"
-        :key="index"
-      >
-        <span
-          v-if="message.content.data2.user.email == getStateUser.user.email"
-        >
-          {{ message.content.data1 }}
-          <span class="count">いいね{{ message.content.data3 }}</span>
-          <v-btn
-            class="delete-btn"
-            small
-            color="warning"
-            @click="deleteMessage(index)"
-            >削除</v-btn
-          >
-        </span>
-      </div>
-    </div>
-    <p>
-      <v-btn small color="primary" to="/message">くすりとさせる</v-btn>
-    </p>
-    <p>
-      <v-btn class="delete-btn" small color="error" @click="deleteUser"
-        >アカウント削除</v-btn
-      >
-    </p>
-  </div>
+  <v-app height="auto">
+    <v-container fluid class="profile">
+      <v-row align="center" justify="center">
+        <v-col cols="12" sm="10" md="8">
+          <span v-if="getStateUser.user.photoURL">
+            <img
+              class="profile-image"
+              v-bind:src="getStateUser.user.photoURL"
+            />
+          </span>
+          <span v-else>
+            <v-icon class="profile-image" large color="white">🐻</v-icon>
+          </span>
+          <span v-if="getStateUser.user.displayName">{{
+            getStateUser.user.displayName
+          }}</span>
+          <span v-else>くま</span>
+          <p>○くすり歴</p>
+          <div v-for="(message, index) in messages" :key="index">
+            <v-card
+              class="messages-list"
+              v-if="message.content.data2.user.email == getStateUser.user.email"
+            >
+              <v-card-text class="message-content">{{
+                message.content.data1
+              }}</v-card-text>
+              <v-card-actions>
+                <v-row align="center" justify="end">
+                  <span>
+                    <v-icon color="pink">mdi-heart</v-icon>
+                    <span class="good-count">{{ message.content.data3 }}</span>
+                  </span>
+
+                  <span v-if="!isAuthenticated">
+                    <span></span>
+                  </span>
+                  <span
+                    v-else-if="
+                      message.content.data2.user.email ==
+                        getStateUser.user.email
+                    "
+                  >
+                    <v-btn
+                      text
+                      large
+                      color="error"
+                      @click="deleteMessage(index)"
+                      >❌削除</v-btn
+                    >
+                  </span>
+                </v-row>
+              </v-card-actions>
+            </v-card>
+          </div>
+          <p>
+            <v-btn color="primary" to="/message">くすりをつぶやく</v-btn>
+          </p>
+          <p>
+            <v-btn class="delete-btn" color="error" @click="deleteUser"
+              >アカウント削除</v-btn
+            >
+          </p>
+        </v-col>
+      </v-row>
+    </v-container>
+  </v-app>
 </template>
 
 <script>
@@ -88,25 +110,3 @@ export default {
   }
 };
 </script>
-
-<style scoped>
-.profile {
-  background: url("~@/assets/happy-1281590_1920.jpg");
-  background-color: rgba(255, 255, 255, 0.8);
-  background-blend-mode: lighten;
-  background-size: cover;
-  width: 100%;
-  height: 100%;
-}
-
-.profile-image {
-  width: 3%;
-  height: 3%;
-  margin: 5px;
-}
-
-.messages-list {
-  margin: 5px;
-  margin-bottom: 10px;
-}
-</style>

@@ -1,6 +1,7 @@
 <template>
-  <v-app>
+  <v-app fluid>
     <app-navigation></app-navigation>
+
     <v-content transition="slide-x-transition">
       <router-view></router-view>
     </v-content>
@@ -18,4 +19,7 @@ export default {
 };
 </script>
 
-<style></style>
+<style>
+@import "./assets/css/reset.css";
+@import "./assets/css/style.css";
+</style>

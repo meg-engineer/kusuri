@@ -1,59 +1,99 @@
 <template>
-  <div id="app" class="message">
-    <div v-if="!isAuthenticated" class="hidden-sm-and-down">
-      <p class="error-msg">
-        ※くすりとさせるには
-        <v-btn small outlined color="primary" to="/sign-in">ログイン</v-btn
-        >または
-        <v-btn small outlined color="error" to="/join">ユーザー登録</v-btn
-        >が必要です
-      </p>
-    </div>
-    <v-text-field
-      name="message"
-      label="くすりと笑わせて！"
-      type="text"
-      v-model="messege"
-      data-cy="addMessageField"
-      required
-    ></v-text-field>
-    <v-btn color="primary" @click="add" data-cy="addMessageBtn"
-      >くすりとさせる</v-btn
-    >
+  <v-app height="auto">
+    <v-container fluid class="message">
+      <div v-if="!isAuthenticated" class="hidden-sm-and-down">
+        <p class="error-msg">
+          ※くすりをつぶやくには
+          <v-btn small outlined color="primary" to="/sign-in">ログイン</v-btn
+          >または
+          <v-btn small outlined color="error" to="/join">ユーザー登録</v-btn
+          >が必要です
+        </p>
+      </div>
+      <v-row align="center" justify="center">
+        <v-col cols="12" sm="10" md="8">
+          <v-text-field
+            name="message"
+            label="あなたのくすりを聞かせて！"
+            type="text"
+            v-model="messege"
+            data-cy="addMessageField"
+            required
+            class="text-field"
+            clearable
+          >
+            <template v-slot:append-outer>
+              <v-btn class="mx-2" fab dark small color="cyan" @click="add">
+                <v-icon dark>mdi-pencil</v-icon>
+              </v-btn>
+            </template>
+          </v-text-field>
 
-    <p class="kusuri-index font-weight-bold">くすり一覧</p>
-    <li class="messages-list" v-for="(message, index) in messages" :key="index">
-      {{ message.content.data1 }} :
-      <router-link :to="{ name: 'User', params: { value: message } }">
-        <span v-if="message.content.data2.user.displayName">{{
-          message.content.data2.user.displayName
-        }}</span>
-        <span v-else>{{ message.content.data2.user.email }}</span>
-      </router-link>
-      <span v-if="!isAuthenticated">
-        <span class="count">いいね{{ message.content.data3 }}</span>
-      </span>
-      <span v-else>
-        <v-btn class="delete-btn" small color="success" @click="addCount(index)"
-          >いいね{{ message.content.data3 }}</v-btn
-        >
-      </span>
-      <span v-if="!isAuthenticated">
-        <span></span>
-      </span>
-      <span
-        v-else-if="message.content.data2.user.email == getStateUser.user.email"
-      >
-        <v-btn
-          class="delete-btn"
-          small
-          color="warning"
-          @click="deleteMessage(index)"
-          >削除</v-btn
-        >
-      </span>
-    </li>
-  </div>
+          <v-card
+            class="messages-list"
+            v-for="(message, index) in messages"
+            :key="index"
+          >
+            <v-card-text class="message-content">{{
+              message.content.data1
+            }}</v-card-text>
+
+            <v-card-actions>
+              <v-list-item>
+                <v-list-item-user class="message-user">
+                  <v-icon large color="white" class="message-icon">🐻</v-icon>
+                  <v-btn
+                    text
+                    :to="{ name: 'User', params: { value: message } }"
+                  >
+                    <span v-if="message.content.data2.user.displayName">
+                      {{ message.content.data2.user.displayName }}
+                    </span>
+                    <span v-else>{{ message.content.data2.user.email }}</span>
+                  </v-btn>
+                </v-list-item-user>
+                <v-row align="center" justify="end">
+                  <span v-if="!isAuthenticated">
+                    <span class="count">
+                      <v-icon color="pink">mdi-heart</v-icon>
+                      <span class="good-count">{{
+                        message.content.data3
+                      }}</span>
+                    </span>
+                  </span>
+                  <span v-else>
+                    <v-btn icon color="pink" @click="addCount(index)">
+                      <v-icon>mdi-heart</v-icon>
+                      <span class="good-count">{{
+                        message.content.data3
+                      }}</span>
+                    </v-btn>
+                  </span>
+                  <span v-if="!isAuthenticated">
+                    <span></span>
+                  </span>
+                  <span
+                    v-else-if="
+                      message.content.data2.user.email ==
+                        getStateUser.user.email
+                    "
+                  >
+                    <v-btn
+                      text
+                      large
+                      color="error"
+                      @click="deleteMessage(index)"
+                      >❌削除</v-btn
+                    >
+                  </span>
+                </v-row>
+              </v-list-item>
+            </v-card-actions>
+          </v-card>
+        </v-col>
+      </v-row>
+    </v-container>
+  </v-app>
 </template>
 
 <script>
@@ -63,24 +103,18 @@ export default {
   name: "Message",
   data: function() {
     return {
-      messages: [],
+      messages: [].slice().reverse(),
       messege: "",
       user: this.$store.getters.getStateUser,
-      count: this.$store.getters.getCount
+      count: 0
     };
   },
   computed: {
-    getStateMessege() {
-      return this.$store.getters.getStateMessege;
-    },
     getStateUser() {
       return this.$store.getters.getStateUser;
     },
     isAuthenticated() {
       return this.$store.getters.isAuthenticated;
-    },
-    getCount() {
-      return this.$store.getters.getCount;
     }
   },
   methods: {
@@ -89,7 +123,7 @@ export default {
         this.$store.dispatch("addMessage", {
           messageData: this.messege,
           userData: this.user,
-          countData: this.count
+          countData: 0
         });
         this.messege = "";
       } else {
@@ -104,7 +138,14 @@ export default {
         .remove();
     },
     addCount(index) {
-      const addCountData = this.count++;
+      firebase
+        .database()
+        .ref("messages")
+        .child(index)
+        .child("content/data3")
+        .on("value", data => (this.count = data.val()));
+
+      const addCountData = this.count + 1;
       this.$store.dispatch("addCount", { index, addCountData });
     }
   },
@@ -116,31 +157,3 @@ export default {
   }
 };
 </script>
-
-<style scoped>
-.delete-btn {
-  margin: 5px;
-}
-
-.messages-list {
-  font-size: 18px;
-}
-
-.messages-list > span {
-  font-size: 14px;
-}
-
-.message {
-  background: url("~@/assets/happy-1281590_1920.jpg");
-  background-color: rgba(255, 255, 255, 0.8);
-  background-blend-mode: lighten;
-  background-size: cover;
-  width: 100%;
-  height: 100%;
-}
-
-.kusuri-index {
-  margin-top: 20px;
-  font-size: 18px;
-}
-</style>

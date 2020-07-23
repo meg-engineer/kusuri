@@ -8,11 +8,23 @@
       disable-resize-watcher
     >
       <v-list>
-        <template v-for="(item, index) in items">
-          <v-list-tile :key="index">
-            <v-list-tile-content>{{ item.title }}</v-list-tile-content>
-          </v-list-tile>
-          <v-divider :key="`divider-${index}`"></v-divider>
+        <template>
+          <div v-if="!isAuthenticated">
+            <v-btn text to="/sign-in" data-cy="signinBtn">ログイン</v-btn>
+            <v-btn
+              color="brown lighten-3"
+              to="/join"
+              class="nav-join"
+              data-cy="joinBtn"
+              >ユーザー登録</v-btn
+            >
+          </div>
+          <div v-else>
+            <v-btn text to="/profile">プロフィール</v-btn>
+            <v-btn outline color="gray" @click="logout" data-cy="logout"
+              >ログアウト</v-btn
+            >
+          </div>
         </template>
       </v-list>
     </v-navigation-drawer>
@@ -25,7 +37,12 @@
       <router-link to="/">
         <v-toolbar-title to="/">{{ appTitle }}</v-toolbar-title>
       </router-link>
+
       <v-spacer class="hidden-sm-and-down"></v-spacer>
+      <div class="hidden-md-and-up">
+        <v-btn flat @click="drawer = !drawer">Menu</v-btn>
+      </div>
+
       <div v-if="!isAuthenticated" class="hidden-sm-and-down">
         <v-btn text to="/sign-in" data-cy="signinBtn">ログイン</v-btn>
         <v-btn
@@ -36,7 +53,7 @@
           >ユーザー登録</v-btn
         >
       </div>
-      <div v-else>
+      <div v-else class="hidden-sm-and-down">
         <v-btn text to="/profile">プロフィール</v-btn>
         <v-btn outline color="gray" @click="logout" data-cy="logout"
           >ログアウト</v-btn
@@ -52,8 +69,7 @@ export default {
   data() {
     return {
       appTitle: "くすり 🐻 ",
-      drawer: false,
-      items: [{ title: "Profile" }, { title: "Sign In" }, { title: "Join" }]
+      drawer: false
     };
   },
   computed: {

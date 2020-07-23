@@ -46,7 +46,7 @@ export default new Vuex.Store({
         .catch(() => {
           commit("setUser", null);
           commit("setIsAuthenticated", false);
-          router.push("/");
+          alert("入力内容に誤りがあります。");
         });
     },
     userLoginGoogle({ commit }) {
@@ -62,7 +62,6 @@ export default new Vuex.Store({
         .catch(() => {
           commit("setUser", null);
           commit("setIsAuthenticated", false);
-          router.push("/");
         });
     },
     userJoin({ commit }, { email, password, userName }) {
@@ -80,7 +79,7 @@ export default new Vuex.Store({
         .catch(() => {
           commit("setUser", null);
           commit("setIsAuthenticated", false);
-          router.push("/");
+          alert("入力内容に誤りがあります。");
         });
       firebase
         .database()
