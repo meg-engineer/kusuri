@@ -35,7 +35,10 @@
       ></v-toolbar-side-icon>
       <v-spacer class="hidden-md-and-up"></v-spacer>
       <router-link to="/">
-        <v-toolbar-title to="/">{{ appTitle }}</v-toolbar-title>
+        <v-toolbar-title to="/">
+          {{ appTitle }}
+          <img src="@/assets/kusuri.png" />
+        </v-toolbar-title>
       </router-link>
 
       <v-spacer class="hidden-sm-and-down"></v-spacer>
@@ -68,7 +71,7 @@ export default {
   name: "AppNavigation",
   data() {
     return {
-      appTitle: "くすり 🐻 ",
+      appTitle: "くすり",
       drawer: false
     };
   },
