@@ -17,6 +17,21 @@ v-tool-bar {
   margin: 0;
 }
 
+.v-toolbar__title {
+  color: white;
+  text-decoration: none;
+}
+
+a {
+  color: white;
+  text-decoration: none;
+}
+
+.router-link-exact-active {
+  color: white;
+  text-decoration: none;
+}
+
 /* Home */
 
 .home {

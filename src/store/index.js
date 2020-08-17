@@ -1,7 +1,7 @@
 import Vue from "vue";
 import Vuex from "vuex";
 import firebase from "firebase";
-import router from "../router/index.js";
+import router from "@/router/index.js";
 import createPersistedState from "vuex-persistedstate";
 
 Vue.use(Vuex);
@@ -32,7 +32,6 @@ export default new Vuex.Store({
       state.userName = payload;
     }
   },
-
   actions: {
     userLogin({ commit }, { email, password }) {
       firebase

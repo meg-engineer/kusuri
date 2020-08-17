@@ -1,5 +1,5 @@
 <template>
-  <v-container fluid fill-height class="home" style="max-height: 100vh;">
+  <v-container fluid fill-height class="home">
     <v-layout justify-center align-center column pa-5>
       <div class="hidden-sm-and-down">
         <div class="display-4 font-weight-black white--text text-center">
@@ -29,7 +29,6 @@
           日々のクスッと笑える出来事をシェアしよう
         </div>
       </div>
-
       <v-btn large color="primary" dark to="/message">くすりをつぶやく</v-btn>
     </v-layout>
   </v-container>

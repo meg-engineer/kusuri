@@ -1,15 +1,16 @@
 import firebase from "firebase";
 
 var firebaseConfig = {
-  apiKey: "AIzaSyDOObeTvPP8HjMwYfMNAo73aw5m7dDcM2I",
-  authDomain: "kusuri-chat.firebaseapp.com",
-  databaseURL: "https://kusuri-chat.firebaseio.com",
-  projectId: "kusuri-chat",
-  storageBucket: "kusuri-chat.appspot.com",
-  messagingSenderId: "845510575602",
-  appId: "1:845510575602:web:e3bbf93490a66ad6a3576b",
-  measurementId: "G-3VYXDZVM5T"
+  apiKey: process.env.VUE_APP_API_KEY,
+  authDomain: process.env.VUE_APP_AUTH_DOMAIN,
+  databaseURL: process.env.VUE_APP_DATABASE_URL,
+  projectId: process.env.VUE_APP_PROJECT_ID,
+  storageBucket: process.env.VUE_APP_STORAGE_BUCKET,
+  messagingSenderId: process.env.VUE_APP_MESSAGING_SENDER_ID,
+  appId: process.env.VUE_APP_APP_ID,
+  measurementId: process.env.VUE_APP_MEASUREMENT_ID
 };
 // Initialize Firebase
 firebase.initializeApp(firebaseConfig);
+
 firebase.analytics();
