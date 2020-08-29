@@ -34,9 +34,9 @@
             v-for="(message, index) in messages"
             :key="index"
           >
-            <v-card-text class="message-content">{{
-              message.content.data1
-            }}</v-card-text>
+            <v-card-text class="message-content">
+              {{ message.content.data1 }}
+            </v-card-text>
             <v-card-actions>
               <v-list-item>
                 <v-list-item-user class="message-user">
@@ -44,9 +44,9 @@
                     text
                     :to="{ name: 'User', params: { value: message } }"
                   >
-                    <span v-if="message.content.data2.user.displayName">
-                      {{ message.content.data2.user.displayName }}
-                    </span>
+                    <span v-if="message.content.data2.user.displayName">{{
+                      message.content.data2.user.displayName
+                    }}</span>
                     <span v-else>{{ message.content.data2.user.email }}</span>
                   </v-btn>
                 </v-list-item-user>
@@ -54,17 +54,17 @@
                   <span v-if="!isAuthenticated">
                     <span class="count">
                       <v-icon color="pink">mdi-heart</v-icon>
-                      <span class="good-count">{{
-                        message.content.data3
-                      }}</span>
+                      <span class="good-count">
+                        {{ message.content.data3 }}
+                      </span>
                     </span>
                   </span>
                   <span v-else>
                     <v-btn icon color="pink" @click="addCount(index)">
                       <v-icon>mdi-heart</v-icon>
-                      <span class="good-count">{{
-                        message.content.data3
-                      }}</span>
+                      <span class="good-count">
+                        {{ message.content.data3 }}
+                      </span>
                     </v-btn>
                   </span>
                   <span v-if="!isAuthenticated">
@@ -101,7 +101,7 @@ export default {
   name: "Message",
   data() {
     return {
-      messages: [].slice().reverse(),
+      messages: [],
       messege: "",
       user: this.$store.getters.getStateUser,
       count: 0
@@ -118,9 +118,10 @@ export default {
   methods: {
     add() {
       if (this.isAuthenticated) {
+        const session = JSON.parse(sessionStorage.getItem("example"));
         this.$store.dispatch("addMessage", {
           messageData: this.messege,
-          userData: this.user,
+          userData: session.user,
           countData: 0
         });
         this.messege = "";

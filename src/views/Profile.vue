@@ -3,9 +3,9 @@
     <v-container fluid class="profile">
       <v-row align="center" justify="center">
         <v-col cols="12" sm="10" md="8">
-          <span v-if="getStateUser.user.displayName">{{
-            getStateUser.user.displayName
-          }}</span>
+          <span v-if="getStateUser.user.displayName">
+            {{ getStateUser.user.displayName }}
+          </span>
           <span v-else>ログインユーザー</span>
           <p>○くすり歴</p>
           <div v-for="(message, index) in messages" :key="index">
@@ -13,9 +13,9 @@
               class="messages-list"
               v-if="message.content.data2.user.email == getStateUser.user.email"
             >
-              <v-card-text class="message-content">{{
-                message.content.data1
-              }}</v-card-text>
+              <v-card-text class="message-content">
+                {{ message.content.data1 }}
+              </v-card-text>
               <v-card-actions>
                 <v-row align="center" justify="end">
                   <span>
